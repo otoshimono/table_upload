@@ -20,7 +20,7 @@ module TableUpload
     def exec_upload(table_classes)
       table_classes.each do |klass|
         exporter.export(klass)
-        uploader.upload(klass.to_s.downcase)
+        uploader.instance.upload(klass.to_s.downcase)
       end
     end
 
@@ -31,7 +31,8 @@ module TableUpload
 
     def set_default
       self.google_drive_session_config = "spread_sheet_key.json"
-      self.exporter = Worker::Exporter::CSVExporter
+      self.exporter = Exporter::CSVExporter
+      self.uploader = Uploader::SpreadsheetUploader
     end
   end
 end

@@ -1,4 +1,4 @@
-module Worker
+module TableUpload
   module Uploader
     class SpreadsheetUploader
       include Singleton
