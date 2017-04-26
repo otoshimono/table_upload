@@ -3,7 +3,7 @@ require 'table_upload/exporter/csv_exporter'
 require 'table_upload/uploader/spreadsheet_uploader'
 
 module TableUpload
-
+  
   mattr_accessor :google_drive_session_config, :google_drive_dir, :exporter, :uploader, :export_dir
 
   class << self
@@ -30,7 +30,7 @@ module TableUpload
     end
 
     def set_default
-      self.google_drive_session_config = "spread_sheet_key.json"
+      self.google_drive_session_config = "config.json"
       self.exporter = Exporter::CSVExporter
       self.uploader = Uploader::SpreadsheetUploader
     end
