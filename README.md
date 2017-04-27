@@ -1,15 +1,19 @@
 # TableUpload
+※ This gem is internal use only now.  sorry for not well tested and documented.
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/table_upload`. To experiment with that code, run `bin/console` for an interactive prompt.
+Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/table_upload`. 
 
-TODO: Delete this and the text above, and describe your gem
+By using this gem you can easily export your table attributes to csv file and upload to Google Drive.
+Also you can define your original exporter and uploader :)
+
 
 ## Installation
 
 Add this line to your application's Gemfile:
+(Now,  this gem is internal use. )
 
 ```ruby
-gem 'table_upload'
+gem 'table_upload', :github => 'otoshimono/table_upload'
 ```
 
 And then execute:
@@ -21,8 +25,33 @@ Or install it yourself as:
     $ gem install table_upload
 
 ## Usage
+If you want to upload  to Google Drive, you need to create config.json file.
+See this document to learn how to create config.json:
+https://github.com/gimite/google-drive-ruby/blob/master/doc/authorization.md
 
-TODO: Write usage instructions here
+Most usage cases, you define upload rake task, like this.
+```ruby
+namespace :batches do
+  desc "export csv and upload to GoogleDrive"
+  
+  task :upload_csv_to_drive => :environment do
+    TableUpload.setup do |config|
+      config.export_dir = Rails.root.join("db", "csv") # csv save dir
+      config.google_drive_dir = "AwsomeDir" # You need to prepare GoogleDrive Directory
+    end
+    TableUpload.exec_upload_all
+  end
+
+  task :upload_users_csv_to_drive => :environment do
+    TableUpload.setup do |config|
+      config.export_dir = Rails.root.join("db", "csv") # csv save dir
+      config.google_drive_dir = "AwsomeDir" # You need to prepare GoogleDrive Directory
+    end
+    TableUpload.exec_upload([User, Customer, Post])
+  end
+end
+```
+
 
 ## Development
 
@@ -38,4 +67,6 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/[USERN
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+
+
 
