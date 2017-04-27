@@ -10,7 +10,7 @@ Also you can define your original exporter and uploader :)
 ## Installation
 
 Add this line to your application's Gemfile:
-(Now,  this gem is internal use. )
+(Now,  this gem is internal use. Not Released to rubygems.org)
 
 ```ruby
 gem 'table_upload', :github => 'otoshimono/table_upload'
@@ -26,28 +26,30 @@ Or install it yourself as:
 
 ## Usage
 If you want to upload  to Google Drive, you need to create config.json file.
-See this document to learn how to create config.json:
-https://github.com/gimite/google-drive-ruby/blob/master/doc/authorization.md
+See this document to learn how to create config.json(You need to create with first way)
+https://github.com/gimite/google-drive-ruby/blob/master/doc/authorization.md#on-behalf-of-you-command-line-authorization
 
 Most usage cases, you define upload rake task, like this.
 ```ruby
 namespace :batches do
   desc "export csv and upload to GoogleDrive"
   
-  task :upload_csv_to_drive => :environment do
+  # upload all tables
+  task :upload_all_table_csv_to_drive => :environment do
     TableUpload.setup do |config|
       config.export_dir = Rails.root.join("db", "csv") # csv save dir
-      config.google_drive_dir = "AwsomeDir" # You need to prepare GoogleDrive Directory
+      config.google_drive_dir = "AwsomeDir" # You need to prepare GoogleDrive Directory which you can access
     end
     TableUpload.exec_upload_all
   end
 
+  # upload specific tables
   task :upload_users_csv_to_drive => :environment do
     TableUpload.setup do |config|
       config.export_dir = Rails.root.join("db", "csv") # csv save dir
       config.google_drive_dir = "AwsomeDir" # You need to prepare GoogleDrive Directory
     end
-    TableUpload.exec_upload([User, Customer, Post])
+    TableUpload.exec_upload([User, Customer]) #set classes array here
   end
 end
 ```
