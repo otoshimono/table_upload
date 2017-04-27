@@ -17,8 +17,9 @@ module TableUpload
         path = TableUpload.export_dir.join(file_name)
 
         # 既存ファイルを削除
-        file = folder.file_by_title(file_name)
-        folder.remove(file)
+        if file = folder.file_by_title(file_name)
+          folder.remove(file)
+        end
 
         # 再作成
         file = session.upload_from_file(path.to_s, file_name)
