@@ -12,8 +12,8 @@ module TableUpload
           raise "Please Define #export method!!"
         end
 
-        def attribute_names(klass)
-          klass.new.attributes.keys
+        def attribute_names(table_setting)
+          table_setting.klass.new.attributes.keys - table_setting.option[:skip_columns].to_a.map(&:to_s)
         end
 
       end

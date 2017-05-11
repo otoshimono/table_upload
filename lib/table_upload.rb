@@ -14,13 +14,13 @@ module TableUpload
     end
 
     def exec_upload_all
-      exec_upload(all_table_classes)
+      exec_upload(all_table_classes.map{|klass| TableUpload.to_table_setting(klass)})
     end
 
-    def exec_upload(table_classes)
-      table_classes.each do |klass|
-        exporter.export(klass)
-        uploader.instance.upload(klass.to_s.downcase)
+    def exec_upload(table_settings)
+      table_settings.each do |table_setting|
+        exporter.export(table_setting)
+        uploader.instance.upload(table_setting.klass.to_s.downcase)
       end
     end
 
@@ -33,6 +33,11 @@ module TableUpload
       self.google_drive_session_config = "config.json"
       self.exporter = Exporter::CSVExporter
       self.uploader = Uploader::SpreadsheetUploader
+    end
+
+    TableSetting = Struct.new(:klass, :option)
+    def to_table_setting(klass, option = {})
+      TableSetting.new(klass, option)
     end
   end
 end

@@ -2,8 +2,9 @@ module TableUpload
   module Exporter
     class CSVExporter < ExporterBase
       class << self
-        def export(klass)
-          attributes = attribute_names(klass)
+        def export(table_setting)
+          klass = table_setting.klass
+          attributes = attribute_names(table_setting)
           csv_data = CSV.generate(headers: true) do |csv|
             csv << attributes
             klass.unscoped.all.each do |obj|
