@@ -7,7 +7,7 @@ module TableUpload
           attributes = attribute_names(table_setting)
           csv_data = CSV.generate(headers: true) do |csv|
             csv << attributes
-            klass.unscoped.all.each do |obj|
+            klass.unscoped.all.order(id: :asc).each do |obj|
               csv << attributes.map { |attr| obj.send(attr) }
             end
           end
